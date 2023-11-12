@@ -27,7 +27,7 @@ blackBackdrop.addEventListener("click", toggleAddTaskForm);
 let categories = [
   {
     title: "Personal",
-    img: "boy.png",
+    img: "casual-man.png",
   },
   {
     title: "Work",
@@ -65,24 +65,32 @@ let tasks = [
     task: "Go to market",
     category: "Shopping",
     completed: false,
+    date: null,
+    time: null,
   },
   {
     id: 2,
     task: "Read a chapter of a book",
     category: "Personal",
     completed: false,
+    date: null,
+    time: null,
   },
   {
     id: 3,
     task: "Prepare presentation for meeting",
     category: "Work",
     completed: false,
+    date: null,
+    time: null,
   },
   {
     id: 4,
     task: "Complete coding challenge",
     category: "Coding",
     completed: false,
+    date: null,
+    time: null,
   },
   {
     id: 5,
@@ -95,36 +103,48 @@ let tasks = [
     task: "Do a 20-minute HIIT workout",
     category: "Fitness",
     completed: false,
+    date: null,
+    time: null,
   },
   {
     id: 7,
     task: "Watch an educational video online",
     category: "Education",
     completed: false,
+    date: null,
+    time: null,
   },
   {
     id: 8,
     task: "Review monthly budget",
     category: "Finance",
     completed: false,
+    date: null,
+    time: null,
   },
   {
     id: 9,
     task: "Buy groceries for the week",
     category: "Shopping",
     completed: false,
+    date: null,
+    time: null,
   },
   {
     id: 10,
     task: "Write in a journal",
     category: "Personal",
     completed: false,
+    date: null,
+    time: null,
   },
   {
     id: 11,
     task: "Send follow-up emails",
     category: "Work",
     completed: false,
+    date: null,
+    time: null,
   },
   {
     id: 12,
@@ -137,24 +157,32 @@ let tasks = [
     task: "Try a new healthy recipe",
     category: "Health",
     completed: false,
+    date: null,
+    time: null,
   },
   {
     id: 14,
     task: "Attend a yoga class",
     category: "Fitness",
     completed: false,
+    date: null,
+    time: null,
   },
   {
     id: 15,
     task: "Read an article about a new topic",
     category: "Education",
     completed: false,
+    date: null,
+    time: null,
   },
   {
     id: 16,
     task: "Set up automatic bill payments",
     category: "Finance",
     completed: false,
+    date: null,
+    time: null,
   },
   // Additional tasks for each category
   {
@@ -168,48 +196,64 @@ let tasks = [
     task: "Meditate for 10 minutes",
     category: "Personal",
     completed: false,
+    date: null,
+    time: null,
   },
   {
     id: 19,
     task: "Prepare agenda for team meeting",
     category: "Work",
     completed: false,
+    date: null,
+    time: null,
   },
   {
     id: 20,
     task: "Debug a software issue",
     category: "Coding",
     completed: false,
+    date: null,
+    time: null,
   },
   {
     id: 21,
     task: "Try a new recipe for lunch",
     category: "Health",
     completed: false,
+    date: null,
+    time: null,
   },
   {
     id: 22,
     task: "Go for a run",
     category: "Fitness",
     completed: false,
+    date: null,
+    time: null,
   },
   {
     id: 23,
     task: "Learn a new language online",
     category: "Education",
     completed: false,
+    date: null,
+    time: null,
   },
   {
     id: 24,
     task: "Read about history",
     category: "Education",
     completed: false,
+    date: null,
+    time: null,
   },
   {
     id: 25,
     task: "Review investment portfolio",
     category: "Finance",
     completed: false,
+    date: null,
+    time: null,
   },
   // Add more tasks for each category as desired
 ];
@@ -285,6 +329,19 @@ const renderCategories = () => {
 // tasks
 const taskContainer = document.querySelector(".tasks");
 
+function formatDateTime(date, time) {
+  const dateTime = new Date(`${date} ${time}`);
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  };
+  return dateTime.toLocaleString("en-US", options);
+}
 const renderTasks = () => {
   taskContainer.innerHTML = "";
   const categoryTasks = tasks.filter(
@@ -317,7 +374,6 @@ const renderTasks = () => {
         saveLocal();
       });
 
-    
       div.innerHTML = `
         <div class="delete">
             <svg
@@ -338,23 +394,16 @@ const renderTasks = () => {
             `;
 
       label.innerHTML = `
-            <span class="checkmark"
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="w-6 h-6"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M4.5 12.75l6 6 9-13.5"
-              />
-            </svg>
-          </span>
-          <p>${task.task}</p>
+      <span class="checkmark">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+        </svg>
+      </span>
+    <div class="task-details">
+        <p>${task.task}</p>
+        <p>${task.date ? `<p class="reminder">${formatDateTime(task.date, task.time)}</p>`
+      : ""}</p>
+    </div>
             `;
 
       label.prepend(checkbox);
@@ -362,15 +411,15 @@ const renderTasks = () => {
       taskContainer.appendChild(div);
 
       // delete task functionality
-    const deleteBtn = div.querySelector(".delete");
-    deleteBtn.addEventListener("click", ()=>{
+      const deleteBtn = div.querySelector(".delete");
+      deleteBtn.addEventListener("click", () => {
         const index = tasks.findIndex((t) => t.id === task.id);
 
         // delete task from category
         tasks.splice(index, 1);
         saveLocal();
         renderTasks();
-    });
+      });
     });
 
     renderCategories();
@@ -399,32 +448,38 @@ const taskInput = document.querySelector("#task-input");
 
 cancelBtn.addEventListener("click", toggleAddTaskForm);
 addBtn.addEventListener("click", () => {
-    const task = taskInput.value;
-    const category = categorySelect.value;
+  const task = taskInput.value;
+  const category = categorySelect.value;
+  const date = document.getElementById("date-input").value;
+  const time = document.getElementById("time-input").value;
 
-    if((task === "")) {
-        alert("Please enter a task");
-    } else {
-        const newTask = {
-            id: task.length + 1,
-            task,
-            category,
-            completed: false,
-        };
-        tasks.push(newTask);
-        taskInput.value = "";
-        saveLocal();
-        toggleAddTaskForm();
-        renderTasks();
-    }
+  if (task === "" || date === "" || time === "") {
+    alert("Please enter a task, date, and time");
+  } else {
+    const newTask = {
+      id: task.length + 1,
+      task,
+      category,
+      date,
+      time,
+      completed: false,
+    };
+    tasks.push(newTask);
+    taskInput.value = "";
+    document.getElementById("date-input").value = "";
+    document.getElementById("time-input").value = "";
+    saveLocal();
+    toggleAddTaskForm();
+    renderTasks();
+  }
 });
 
 categories.forEach((category) => {
-    const option = document.createElement("option");
-    option.value = category.title.toLowerCase();
-    option.textContent = category.title;
-    categorySelect.appendChild(option);
-})
+  const option = document.createElement("option");
+  option.value = category.title.toLowerCase();
+  option.textContent = category.title;
+  categorySelect.appendChild(option);
+});
 
 // these are already stored
 
