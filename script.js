@@ -401,8 +401,8 @@ const renderTasks = () => {
       </span>
     <div class="task-details">
         <p>${task.task}</p>
-        <p>${task.date ? `<p class="reminder">${formatDateTime(task.date, task.time)}</p>`
-      : ""}</p>
+        ${task.date ? `<p class="reminder">${formatDateTime(task.date, task.time)}</p>`
+      : ""}
     </div>
             `;
 
@@ -457,7 +457,7 @@ addBtn.addEventListener("click", () => {
     alert("Please enter a task, date, and time");
   } else {
     const newTask = {
-      id: task.length + 1,
+      id: tasks.length + 1,
       task,
       category,
       date,
