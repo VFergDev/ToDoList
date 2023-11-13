@@ -370,6 +370,11 @@ const renderTasks = () => {
         const index = tasks.findIndex((t) => t.id === task.id);
         // toggle between true and false
         tasks[index].completed = !tasks[index].completed;
+        // Play the ding sound when the checkbox is checked
+    if (tasks[index].completed) {
+        const dingSound = document.getElementById("dingSound");
+        dingSound.play();
+  }
         //  save to local
         saveLocal();
       });
